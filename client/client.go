@@ -17,7 +17,10 @@ type Client struct {
 
 func newClient(addr string) (*Client, error) {
 	conn, err := net.Dial("tcp", addr)
-	return &Client{conn: conn}, fmt.Errorf("could not connect to server: %v", err)
+	if err != nil {
+		return &Client{}, fmt.Errorf("could not connect to server: %v", err)
+	}
+	return &Client{conn: conn}, nil
 }
 
 func (c *Client) getChallange() (string, error) {
