@@ -1,0 +1,16 @@
+FROM golang:latest as builder
+
+WORKDIR /app
+
+COPY . .
+
+RUN go build -o server ./server
+
+
+FROM ubuntu:latest
+
+WORKDIR /app
+
+COPY --from=builder /app/server/server /app/server
+
+CMD ["/app/server"]
